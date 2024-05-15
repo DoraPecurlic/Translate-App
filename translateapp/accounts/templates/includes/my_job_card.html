@@ -1,0 +1,43 @@
+<div class="card my-4 shadow-sm p-2 mb-5 rounded w-75">
+    <div class="card-body m-2">
+        <div class="row">
+            <h3 class="card-title">{{ job.title }}</h3>
+        </div>
+        <div class="card-subtitle mb-2 mt-1 ">{{ job.description }}</div>
+        <div class="card-text mb-2 mt-3 text-muted">Source language: {{ job.get_source_lang_display }}</div>
+        <div class="card-text mb-2 text-muted">Target language: {{ job.get_target_lang_display }}</div>
+        <div class="card-text mb-2  text-muted">Field: {{ job.get_field_display }}</div>
+        <div class="card-text mb-2 text-muted">Budget: {{ job.budget }} tokens</div>
+        <div class="card-text mb-2 mt-3 text-muted"> Status: {{ job.status }}</div>
+
+        
+        {% for bid in bids %}
+        <div class="card mt-3 p-2 rounded bid {% if bid.accepted %} accepted {% endif %}">
+            <h4>
+            Bidder: 
+            <a href="{% url 'accounts:profile' bid.bidder.id %}">
+                {{ bid.bidder.account.name }}
+            </a>
+            </h4>
+            <p class="mt-2">
+            <strong>Price: {{ bid.price }}</strong>, 
+            Accepted: {{ bid.accepted }}
+            </p>
+            {% if not bid.accepted and job.is_available %}
+            <!--check models.py for the is_available method-->
+            <p>
+                <form action="{% url 'app:accept_bid' bid.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Accept bid">
+                </form>
+            </p>
+            {% elif bid.completed %}
+            <p>
+                <span class="me-2">{% if bid.rating %} You rated it {{ bid.rating.rating }} {% endif %}</span>
+                <a href="{% url 'app:bid_detail' bid.id %}">See the completed translation</a>
+            </p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>

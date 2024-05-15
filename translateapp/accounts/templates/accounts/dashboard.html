@@ -1,0 +1,95 @@
+{% extends 'app/base.html' %}
+
+<!--USER DASHBOARD-->
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h1 class="mb-5 mt-5">Hello {{ user.account.name }}</h1>
+      {% if user.account.translator %}
+        <h4>Translator - Rating: {{ user.account.rating }}</h4>
+      {% endif %}
+      <p class="mb-3 mt-3">Token balance: <strong>{{ user.account.balance }}</strong></p>
+      <pclass="mb-3 mt-3">Email: {{ user.email }}</p>
+
+
+      <h2 class="mt-5 mb-4">My Active Jobs</h2>
+
+      {% for job in my_active_jobs %}
+        {% include 'includes/my_job_card.html' with job=job bids=job.bid_order_by %}
+        {% empty %}
+          <p>You dont have any jobs at the moment</p>
+      {% endfor %}
+
+      <h2 class="mt-5 mb-4">My Completed Jobs</h2>
+
+      {% for job in my_completed_jobs %}
+        {% include 'includes/my_job_card.html' with job=job bids=job.bid_order_by %}
+        {% empty %}
+          <p>You dont have any jobs at the moment</p>
+      {% endfor %}
+
+      {% if user.account.translator %}
+      <h2 class="mt-5 mb-1">My translations dashboard</h2><hr>
+          
+       <h2 class="mt-5 mb-4">My bids</h2>
+        {% for bid in my_bids  %}
+        <div class="card my-4 shadow-sm p-3 mb-5 rounded card-body m-2 rounded bid {% if bid.accepted %} accepted {% endif %}">
+          <p>
+          <strong>My bid on {{ bid.job.title }} for {{ bid.price }} tokens.</strong>
+          </p>
+          <p>
+          {{ bid.job.description }}</br>
+          From {{ bid.job.get_source_lang_display }} to {{ bid.job.get_target_lang_display }}.
+          </p>
+          <p>Field: {{ bid.job.get_field_display }}; Status:  {{ bid.job.status   }}</p>
+      
+        </div>
+        {% empty %}
+          <p>You dont have any bids at the moment</p>
+        {% endfor %}
+
+      <h2 class="mt-5 mb-4">My won bids (Jobs assigned to me)</h2>
+        {% for bid in my_won_bids  %}
+          {% if not bid.completed %}
+            {% include 'includes/my_bid_card.html' with bid=bid %}
+          {% endif %}
+          {% empty %}
+          <p>You dont have any won bids at the moment</p>
+        {% endfor %}
+
+      <h2>My completed jobs</h2>
+        {% for bid in my_won_bids  %}
+          {% if bid.completed %}
+          {% include 'includes/my_bid_card.html' with bid=bid %}
+          {% endif %}
+          {% empty %}
+            <p>You dont have any completed jobs at the moment</p>
+        {% endfor %}
+
+
+      {% endif %}
+    </div>
+    <div class="col-md-4">
+      <h1 class="mb-5 mt-5">Messages</h1>
+      <div class="rounded card p-3">
+        {% for thread_user, thread in my_threads %}
+
+          <h3> {{ thread_user.account.name }} </h3>
+
+          {% for message in thread %}
+            {% include 'includes/message_card.html' with message=message user=user%}
+          {% endfor %}
+        {% empty %}
+            <p>You dont have any messages at the moment</p>
+        {% endfor %}
+      </div>
+    </div>
+    
+  </div>
+  
+</div>
+
+{% endblock content %}

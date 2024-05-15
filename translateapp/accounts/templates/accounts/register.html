@@ -1,0 +1,61 @@
+{% extends 'app/base.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+  <div class="ms-auto">
+    <h1 class="mb-5 mt-5">Register an account with us!</h1>
+  <form method="post">
+    {% csrf_token %}
+
+    {% for hidden in user_form.hidden_fields %}
+      {{ hidden }}
+    {% endfor %}
+    {% for hidden in account_form.hidden_fields %}
+      {{ hidden }}
+    {% endfor %}
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h2>Enter you user details</h2>
+          {% for field in user_form.visible_fields %}
+            <div class="form-group margin--bottom">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field|add_class:'form-control' }}
+              {% for error in field.errors %}
+                <span class="help-block">{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endfor %}
+
+          <h2>Enter you account details</h2>
+
+          <div class="form-group margin--bottom">
+            <label for="{{ account_form.name.id_for_label }}">{{ account_form.name.label }}</label>
+            {{ account_form.name|add_class:'form-control' }}
+            {% for error in account_from.name.errors %}
+              <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+
+          <div class="form-switch margin--bottom">
+            {{ account_form.translator|add_class:'form-check-input' }}
+            <label class="form-check-label" for="{{ account_form.translator.id_for_label }}">{{ account_form.translator.label }}</label>
+            {% for error in account_from.translator.errors %}
+              <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn custom-btn px-4 py-2">
+              <span class="glyphicon glyphicon-ok"></span> Save
+            </button>
+            <a href="{% url 'home_path' %}" class="btn btn-default">Cancel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  </div>
+{% endblock %}

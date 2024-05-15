@@ -1,0 +1,31 @@
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'app/css/message_card.css' %}">
+</head>
+
+<div id="container">
+    <main>
+  
+      <ul id="chat">
+        <li class="{% if user == message.sender %} me {% else %} you {% endif %}">
+          <div class="entete">
+            <span class=" status {% if user == message.sender %} blue {% else %} green {% endif %}"></span>
+            <h2>{% if user == message.sender %} 
+                    {{ message.sender }}
+                {% else %} 
+                    <a href="{% url 'accounts:profile' message.sender.id %}">
+                        {{ message.sender.account.name }}
+                    </a> 
+                {% endif %}
+            </h2>
+            <h3>{{ message.sent_at }}</h3>
+          </div>
+          <div class="message">
+            {{ message.text }}
+          </div>
+        </li>
+        
+    </main>
+  </div>
+  

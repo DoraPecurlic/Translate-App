@@ -1,0 +1,20 @@
+
+<div class="card my-4 shadow-sm p-3 mb-5 rounded card-body m-2 rounded bid {% if bid.accepted %} accepted {% endif %}">
+    <p>
+    <strong>My bid on {{ bid.job.title }} for {{ bid.price }} tokens.</strong>
+    </p>
+    <p>
+    {{ bid.job.description }}</br>
+    From {{ bid.job.get_source_lang_display }} to {{ bid.job.get_target_lang_display }}.
+    </p>
+    <p>Field: {{ bid.job.get_field_display }}; Status:  {{ bid.job.status   }}</p>
+
+    {% if not bid.completed %}
+        <p><a href="{% url 'app:deliver_translation' bid.id %}">Submit your translation</a></p>
+    {% elif bid.completed %}
+        <p>
+        <a href="{% url 'app:bid_detail' bid.id %}">See the completed translation</a>
+        </p>
+    {% endif %}
+</div>
+  

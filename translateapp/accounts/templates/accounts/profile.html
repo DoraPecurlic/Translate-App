@@ -1,0 +1,79 @@
+{% extends 'app/base.html' %}
+
+<!--USER PROFILE -->
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="mb-5 mt-5 ">{{ profile_user.account.name }}'s profile page</h1>
+      {% if user.account.translator %}
+        <h4>Translator - Rating: {{ profile_user.account.rating }}</h4>
+      {% endif %}
+      <h5 class="mb-3 mt-3">Email: {{ profile_user.email }}</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="mt-5 mb-4 text-center">User's accepted jobs</h2>
+      {% for job in accepted_jobs  %}
+        {% include 'includes/job_card.html' with job=job %}
+      {% empty %}
+        <p class="text-center">No accepted jobs</p>
+      {% endfor %}
+
+    </div>
+    <div class="col-md-12">
+      <h2 class="mt-5 mb-4 text-center">User's completed jobs</h2>
+      {% for job in completed_jobs  %}
+        {% include 'includes/job_card.html' with job=job %}
+      {% empty %}
+        <p class="text-center">No completed jobs</p>
+      {% endfor %}
+
+    </div>
+    {% if user.account.translator %}
+      <div class="col-md-12">
+        <h2 class="mt-5 mb-1">Translator's stats</h2><hr>
+        <h2 class="mt-5 mb-4 text-center">User's bids</h2>
+        {% for bid in bids  %}
+          <div class="card my-4 shadow-sm p-3 mb-5">
+            <div class="card-body m-2">
+              <h4>Bid on {{ bid.job.title }} for {{ bid.price }} tokens</h4>
+                
+                {% if bid.accepted %}
+                  <p class="won-job">Won the job!</p>
+                {% else %}
+                  <p class="lost-job">Someone else was cheaper :(</p>
+                {% endif %}
+            </div>
+          </div>
+        {% empty %}
+          <p class="text-center">No bids on any jobs</p>
+        {% endfor %}
+
+        <h2 class="mt-5 mb-4 text-center">Won jobs - currently working on:</h2>
+        {% for bid in won  %}
+          <div class="card my-4 shadow-sm p-3 mb-5">
+            <div class="card-body m-2">
+              <h4>{{ bid.job.title }} for {{ bid.price }} tokens</h4>
+                <p>Translating from 
+                  {{ bid.job.get_source_lang_display }} to 
+                  {{ bid.job.get_target_lang_display }} a text 
+                  in the field of {{ bid.job.get_field_display }}.
+                </p>
+                <p>Job posted by <a href="{% url "accounts:profile" bid.job.user.id %}">{{ bid.job.user.account.name }}</a></p>
+            </div>
+          </div>
+        {% empty %}
+          <p class="text-center">Didn't win any jobs!</p>
+        {% endfor %}
+
+      </div>
+    {% endif %}
+  </div>
+  
+</div>
+
+{% endblock content %}

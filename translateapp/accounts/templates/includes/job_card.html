@@ -1,0 +1,17 @@
+<div class="card my-4 shadow p-2 mb-5 rounded">
+    <div class="card-body m-2">
+      <div class="row">
+        <h4 class="card-title">{{ job.title }}</h4>
+      </div>
+      <div class="card-subtitle mb-2 mt-1 ">{{ job.description }}</div>
+      <div class="card-text mb-2 mt-3 text-muted">Field: {{ job.field }}</div>
+      <div class="card-text mb-2 text-muted">Source language: {{ job.source_lang }}</div>
+      <div class="card-text mb-2 text-muted">Target language: {{ job.target_lang }}</div>
+      <div class="card-text mb-2 text-muted">Budget: {{ job.budget }} tokens</div>
+      
+      <div class="card-text mb-2 mt-3 "> Status: {{ job.status }}</div>
+      <div>{{ job.accepted_bidder.name }} was accepted for this job with the 
+        bid of {{ job.accepted_bid.price }} </div>
+      
+    </div>
+  </div>

@@ -1,0 +1,56 @@
+{% extends 'app/base.html' %}
+
+
+{% block content %}
+<h1 class="mb-5 mt-5">Available jobs</h1>
+
+<table class="table table-bordered custom-table">
+  {% for job, my_bid in jobs %}
+      <tr class="{% if my_bid %} placed-bid {% endif %} ">
+        <td>
+          <strong>
+            <a href="{% url 'app:job_detail' job.id %}">{{ job.title }}</a>
+          </strong>
+        </td>
+        <td>
+          <a href="{% url 'accounts:profile' job.user.id %}">
+            {{ job.owner.name }}
+          </a>
+        </td>
+        <!--https://stackoverflow.com/a/6127466/347891-->
+        <td>{{ job.get_source_lang_display }} to {{ job.get_target_lang_display }} </td>
+        <td>Budget: {{ job.budget }}</td>
+      </tr>
+      <tr class="{% if my_bid %} placed-bid {% endif %} ">
+        <td colspan="3">
+          {{ job.description }}
+        </td>
+        <td>
+          {{ job.get_field_display }}
+        </td>
+      </tr>
+      <tr class="{% if my_bid %} placed-bid {% endif %} ">
+        {% if my_bid is None and job.user != request.user %}
+          <td colspan="4" class="bid-controls-row">
+            <a href="{% url 'app:job_detail' job.id %}" class="btn custom-btn ms-2 mt-2 mb-5">Submit a quote</a>
+            <a href="{% url 'app:send_message'  job.user.id %}" class="btn custom-btn2 ms-3 mt-2 mb-5">Message Job Owner</a>
+          </td>
+          {% elif my_bid %}
+            <td colspan="4" class="bid-controls-row">
+              <p>You already placed a bit for: <strong> {{ my_bid.price}} </strong></p>
+            </td>
+          {% elif job.user == request.user %}
+            <td colspan="4" class="bid-controls-row">
+              <p>This is your job. Cannot bit your own job! </strong></p>
+            </td>
+        {% endif %}
+      </tr>
+  {% empty %}
+    <tr>
+      <td colspan="4"> No available jobs at this moment</td>
+    </tr>
+  {% endfor %}
+  </table>
+
+
+{% endblock content %}

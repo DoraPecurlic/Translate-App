@@ -1,0 +1,105 @@
+* {
+    box-sizing: border-box;
+}
+
+
+a h2,
+h3 {
+    margin: 0;
+}
+
+
+.status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 7px;
+}
+
+.green {
+    background-color: #58b666;
+}
+
+
+.blue {
+    background-color: #6fbced;
+    margin-right: 0;
+    margin-left: 7px;
+}
+
+
+#chat {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#chat h2,
+#chat h3 {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+#chat h3 {
+    color: #bbb;
+}
+
+#chat .entete {
+    margin-bottom: 5px;
+}
+
+#chat .message {
+    padding: 20px;
+    color: #fff;
+    line-height: 25px;
+    max-width: 90%;
+    display: inline-block;
+    text-align: left;
+    border-radius: 5px;
+}
+
+#chat .me {
+    text-align: right;
+}
+
+#chat .you .message {
+    background-color: #58b666;
+}
+
+#chat .me .message {
+    background-color: #6fbced;
+}
+
+#chat .triangle {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 10px 10px 10px;
+}
+
+#chat .you .triangle {
+    border-color: transparent transparent #58b666 transparent;
+    margin-left: 15px;
+}
+
+#chat .me .triangle {
+    border-color: transparent transparent #6fbced transparent;
+    margin-left: 375px;
+}
+
+main footer {
+    height: 155px;
+    padding: 20px 30px 10px 20px;
+}
+
+main footer a {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #6fbced;
+    vertical-align: top;
+    margin-left: 333px;
+    margin-top: 5px;
+    display: inline-block;
+}
